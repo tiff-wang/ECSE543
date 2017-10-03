@@ -17,18 +17,18 @@ class Matrix(object):
 			sum = 0
 			for i in range(j):
 				sum += matrix[j][i] * matrix[j][i]
-			# print matrix[j][j] - sum
 			matrix[j][j] = math.sqrt(matrix[j][j] - sum)
-			sum = 0
 			for i in range(j):
 				matrix[i][j] = 0;
 			for i in range(j+1, size):
+				sum = 0
 				for k in range(j):
 					sum += matrix[i][k] * matrix[j][k]
 				matrix[i][j] = (matrix[i][j] - sum) / matrix[j][j]
 
 		print ("decomposition of matrix: ")
 		for row in matrix: print(row)
+		print "\n"
 
 
 	#method executes A*A^T. prints resulting matrix 
