@@ -2,11 +2,16 @@ from __future__ import division
 from matrix import Matrix
 from fileReader import FileReader
 from circuit import Circuit
-import math, copy 
+import math, copy, os
 
 m = Matrix()
 r = FileReader()
 c = Circuit()
+
+testCiruits = []
+
+for file in os.listdir("."):
+    if file.endswith(".txt"): testCiruits.append(file)
 
 
 # matrix_2x2 = [[9, 24], [24, 73]]
@@ -89,6 +94,10 @@ matrix2 =[[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
 
 
 
-circuitNetwork = r.parseCircuitFile("circuitFile.txt")
-print c.findNodeVoltage(circuitNetwork)
+# circuitNetwork = r.parseCircuitFile("circuitFile.txt")
+
+for file in testCiruits: 
+	print "{0}: {1}".format(file, c.findNodeVoltage(r.parseCircuitFile(file)))
+
+
 
