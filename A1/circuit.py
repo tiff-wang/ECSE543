@@ -24,9 +24,8 @@ class Circuit(object):
 			Y[i][i] = 1/R[i]
 
 		A_transpose = m.matrixTranspose(A)
+		
 		AYAT = m.matrixMultiplication(m.matrixMultiplication(A, Y), A_transpose)
-
-
 		b = m.matrixVectorMultiplication(A, m.vectorSubtraction(J, m.matrixVectorMultiplication(Y, E)))
 
 		return m.choleski(AYAT, b)

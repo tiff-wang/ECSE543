@@ -91,10 +91,11 @@ class Matrix(object):
 	#method multiplies the matrix * vector and returns de resulting vector
 	def matrixVectorMultiplication(self, matrix, vector):
 		result = []
-		size = len(matrix)
-		for i in range(size):
+		row_size = len(matrix)
+		column_size = len(vector)
+		for i in range(row_size):
 			sum = 0
-			for j in range(size):
+			for j in range(column_size):
 				sum += matrix[i][j] * vector[j]
 			result.append(sum)
 
