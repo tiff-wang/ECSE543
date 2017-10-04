@@ -18,7 +18,7 @@ class FileReader(object):
 		E = map(float, circuitFile[2].split("\n")[0].split(" "))
 
 		A = []
-		for line in circuitFile[5:]:
+		for line in circuitFile[4:]:
 			A.append(map(float, line.split("\n")[0].split(" ")))
 
 
