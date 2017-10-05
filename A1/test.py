@@ -88,14 +88,15 @@ matrix2 =[[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
 # print m.matrixTranpose(matrix1)
 #============================== END ============================
 
+print "\n\n"
 
 #========================== TEST CIRCUITS ========================
-# circuitNetwork = r.parseCircuitFile("circuitFile.txt")
+circuitNetwork = r.parseCircuitFile("circuitFile.txt")
 
-# for file in testCiruits: 
-# 	print "{0}: {1}".format(file, c.findNodeVoltage(r.parseCircuitFile(file)))
+for file in testCiruits: 
+	print "{0}: {1}".format(file, c.findNodeVoltage(r.parseCircuitFile(file)))
 
-# print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(r.parseCircuitFile(file)))
+print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(r.parseCircuitFile(file)))
 #============================== END ============================
 
 

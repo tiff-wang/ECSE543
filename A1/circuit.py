@@ -7,13 +7,10 @@ m = Matrix()
 
 class Circuit(object): 
 
-	def __init__(self): 
-		pass
-	
-
 #circuitNetwork is formatted as a tuples of (J, R, E, A)
 #methods solves the (AYA^T) * Vn = A(J-YE) formula for Vn 
-	def findNodeVoltage(self, circuitNetwork):
+	@staticmethod
+	def findNodeVoltage(circuitNetwork):
 		J = circuitNetwork[0]
 		R = circuitNetwork[1]
 		E = circuitNetwork[2]

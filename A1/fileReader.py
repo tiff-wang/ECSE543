@@ -2,13 +2,31 @@ import copy
 from matrix import Matrix
 
 '''
-write the format convention of the file
+The format of the circuit file is assumed to be of the following form: 
+
+#vector J separated with spaces
+#vector R separated with spaces
+#vector E separated with spaces 
+#skip line
+#matrix A separated with spaces
+
+example: 
+0 0 0 0 0 0
+20 10 10 30 30 30
+10 0 0 0 0 0
+
+-1 1 1 0 0 0
+0 -1 0 1 1 0
+0 0 -1 -1 0 1
 
 '''
 
 
 class FileReader(object):
 	@staticmethod
+
+	#function reads J, R, E vectors and A incident matrix from the circuit file 
+	#and parse it into a tuple to be further manipulated to find the node voltages
 	def parseCircuitFile(filename):
 		file = open(filename, "r")
 		circuitFile = file.readlines()
