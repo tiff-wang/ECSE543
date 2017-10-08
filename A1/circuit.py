@@ -1,6 +1,5 @@
 from __future__ import division
 from matrix import Matrix
-from file import File
 
 
 m = Matrix()
