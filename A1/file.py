@@ -25,7 +25,7 @@ class File(object):
 	@staticmethod
 	#function reads J, R, E vectors and A incident matrix from the circuit file 
 	#and parse it into a tuple to be further manipulated to find the node voltages
-	def parseCircui(filename):
+	def parseCircuit(filename):
 		file = open(filename, "r")
 		circuitFile = file.readlines()
 
@@ -98,8 +98,8 @@ class File(object):
 			J = J + str(0) + " "
 
 		#omit last space (formatting of the read file method)
-		#TODO change to write into the file later + new line
-		print (J[:-1])
+		#print (J[:-1])
+		file.write(J[:-1] + "\n")
 
 
 		#generate R vector (all R)
@@ -107,16 +107,20 @@ class File(object):
 		for i in range(mesh):
 			R = R + str(res) + " "
 
-		print (R[:-1])
+		#print (R[:-1])
+		file.write(R[:-1] + "\n")
+
 
 		#generate E vector (all 0 except for main branch where we insert a 1V test voltage)
-		V = "1 "
+		E = "1 "
 		for i in range(mesh - 1):
-			V = V + str(0) + " "
+			E = E + str(0) + " "
 
-		print (V[:-1])
+		#print (E[:-1])
+		file.write(E[:-1] + "\n")
 
-		print "" 
+
+		file.write("\n")
 
 
 		#generate the incidence matrix A 
@@ -154,9 +158,9 @@ class File(object):
 				else:  
 					sub = sub + str(0) + " "
 
-			print (sub[:-1])
+			#print (sub[:-1])
+			file.write(sub[:-1] + "\n")
 
-		
         #j = column number (0 .. 2N)
         #i = row number (0 .. N)
 		#vertical mesh number = j(2N + 1) + j + 1

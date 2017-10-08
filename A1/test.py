@@ -5,7 +5,6 @@ from circuit import Circuit
 import math, copy, os
 
 m = Matrix()
-f = File()
 c = Circuit()
 
 
@@ -100,9 +99,9 @@ c = Circuit()
 
 #========================== TEST CIRCUITS ========================
 # for file in testCiruits: 
-# 	print "{0}: {1}".format(file, c.findNodeVoltage(f.parseCircui(file)))
+# 	print "{0}: {1}".format(file, c.findNodeVoltage(c.parseCircuit(file)))
 
-# print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(r.parseCircuitFile(file)))
+# print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(c.parseCircuit(file)))
 #============================== END ============================
 
 
@@ -111,4 +110,9 @@ c = Circuit()
 
 #========================= PART 2 TEST ================================
 
-f.FDMatrixGenerator(1, 1000)
+# c.FDMatrixGenerator(1, 1000)
+# nodeV = c.findNodeVoltage(c.parseCircuit("finite-diff-matrix.txt"))
+
+print c.findReq(1, 1000)
+
+
