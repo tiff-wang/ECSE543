@@ -1,10 +1,20 @@
 from __future__ import division
 from matrix import Matrix
 from circuit import Circuit
-import math, copy, os
+import math, copy, os, time
 
 m = Matrix()
 c = Circuit()
+
+#========================== TEST MATRIX ========================
+
+matrix1 =[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1]]
+matrix2 =[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+
+vector = [1, 2, 3, 4]
+
+#============================== END ============================
+
 
 
 #========================= PART 1 TEST ================================
@@ -87,8 +97,8 @@ c = Circuit()
 
 #========================== TEST MATRIX ========================
 
-# matrix1 =[[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]]
-# matrix2 =[[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
+#matrix1 =[[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+#matrix2 =[[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
 
 # print m.matrixMultiplication(matrix1, matrix2)
 # print m.matrixTranpose(matrix1)
@@ -112,6 +122,55 @@ c = Circuit()
 # c.FDMatrixGenerator(1, 1000)
 # nodeV = c.findNodeVoltage(c.parseCircuit("finite-diff-matrix.txt"))
 
-print c.findReq(1, 1000)
+# print c.findReq(1, 1000)
 
+
+## find Req for all N = 2 .. 10 and compute runtime for each N 
+# for N in range(2, 11):
+#  	start = time.clock()
+#  	res = c.findReq(N, 1000)
+#  	end = time.clock()
+#  	runtime = (end - start) * 1000
+#  	print "N = {0}:   Req = {1} ohm   Runtime={2} ms".format(N, res, runtime)
+
+
+#=========================SPARSEMATRIX TEST ================================
+#start = time.time()
+#sparseMultiplication = m.sparseMatrixMultiplication(matrix1, matrix2)
+#print(time.time() - start) * 1000
+#for row in sparseMultiplication:
+	# print row
+
+#start = time.time()
+#sparseMultiplication = m.matrixMultiplication(matrix1, matrix2)
+#print(time.time() - start) * 1000
+#for row in sparseMultiplication:
+	# print row
+
+
+A = c.parseCircuit("q2CircuitFile-1.txt")[3]
+for row in A: print(row)
+
+for row in m.matrixTranspose(A): print (row)
+
+
+print "normal" 
+for row in m.matrixMultiplication(A, m.matrixTranspose(A)): print (row)
+
+
+print "\nsparse"
+for row in m.sparseMatrixMultiplication(A, 0, 4, m.matrixTranspose(A), 0, 4): print (row)
+
+print "\n matrix * vector"
+for row in m.matrixVectorMultiplication(matrix1, vector): print row
+
+print "\n sparse matrix * vector"
+for row in m.sparseMatrixVectorMultiplication(matrix1, 0, 2, vector): print row
+
+
+# print "\nlower"
+# for row in m.choleskiDecomposition(A): print (row)
+
+
+#=========================SPARSEMATRIX TEST END ================================
 

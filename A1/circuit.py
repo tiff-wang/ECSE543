@@ -30,8 +30,8 @@ class Circuit(object):
 
 
 	def findReq(self, N, R):
-		self.FDMatrixGenerator(1, 1000)
-		nodeV = self.findNodeVoltage(self.parseCircuit("finite-diff-matrix.txt"))
+		self.FDMatrixGenerator(N, R)
+		nodeV = self.findNodeVoltage(self.parseCircuit("q2CircuitFile-{0}.txt".format(N)))
 		return nodeV[0] * R / (1 - nodeV[0])
 
 
@@ -89,7 +89,7 @@ class Circuit(object):
 
 
 	def FDMatrixGenerator(self, N, res):
-		file = open("finite-diff-matrix.txt", 'w')
+		file = open("q2CircuitFile-{0}.txt".format(N), 'w')
 		
 		node = (N+1) * (2*N+1)
 		mesh = 4*N**2 + 3*N + 1
