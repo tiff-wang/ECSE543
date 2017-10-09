@@ -131,9 +131,7 @@ class Matrix(object):
 	def matrixTranspose(self, matrix):
 		row_size = len(matrix)
 		column_size = len(matrix[0])
-
 		transpose = []
-
 		for i in range(column_size):
 			row = []
 			for j in range(row_size):
@@ -152,3 +150,44 @@ class Matrix(object):
 		return res
 
 
+	#method manipulating sparse matrices (assuming properties of incidence matrix of q2)
+	#let off1 and b1 be the horizontal offset and bandwidth of Matrix1 respectively
+	#let off2 and b2 be the vertical offset and bandwidth of Matrix2 respectively
+	#the offset is with respect to the diagonal (if set to null, means that matrix is not banded)
+
+	def sparseMatrixMultiplication(self, matrix1, off1, b1, matrix2, off2, b2):
+		result = []
+		row_size = len(matrix1)
+		column_size = len(matrix2[0])
+		for i in range(row_size):
+			offset_row = i + off1 if off1 != None else 0
+			row= []
+			for j in range(column_size):
+				sum = 0
+				offset_column = j + off2 if off2 != None else 0
+				for k in range(offset_row if (offset_row > offset_column) else offset_column, 
+					offset_row + b1 if (offset_row + b1 < offset_column + b2) else offset_column + b2):
+					if(matrix1[i][k] != 0 or matrix2[k][j] != 0): 
+						sum += matrix1[i][k] * matrix2[k][j]
+				row.append(sum)
+			result.append(row)
+
+		return result
+
+	#method manipulating sparse matrices * vector(assuming properties of incidence matrix of q2)
+	#let off and b be the horizontal offset and bandwidth of the matrix respectively
+	#assume that vector is not sparse
+	#the offset is with respect to the diagonal (if set to null, means that matrix is not banded)
+
+	def sparseMatrixVectorMultiplication(self, matrix, off, b, vector):
+		result = []
+		row_size = len(matrix)
+		column_size = len(vector)
+		for i in range(row_size):
+			offset_row = i + off if off != None else 0
+			sum = 0
+			for j in range(offset_row, offset_row + b):
+				sum += matrix[i][j] * vector[j]
+			result.append(sum)
+
+		return result
