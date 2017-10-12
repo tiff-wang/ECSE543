@@ -28,12 +28,33 @@ class Circuit(object):
 
 		return m.choleski(AYAT, b)
 
+#circuitNetwork is formatted as a tuples of (J, R, E, A)
+#methods solves the (AYA^T) * Vn = A(J-YE) formula for Vn
+#this method is meant to solve a N x 2N linear resistive network
+	def sparseFindNodeVoltage(self, circuitNetwork):
+		J = circuitNetwork[0]
+		R = circuitNetwork[1]
+		E = circuitNetwork[2]
+		A = circuitNetwork[3]
+		Y = [[0 for x in range(len(R))] for y in range(len(R))]
+		for i in range(len(Y)):
+			Y[i][i] = 1/R[i]
+		
+		b = len(A[0]) - len(A) + 1
+		AYAT = m.sparseMatrixMultiplication(A, 0, b, m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b), 0, b)
+		
+		vector = m.sparseMatrixVectorMultiplication(A, 0, b, m.vectorSubtraction(J, m.sparseMatrixVectorMultiplication(Y, 0, 1, E)))
+		return m.sparseCholeski(AYAT, vector, b-1)
 
 	def findReq(self, N, R):
 		self.FDMatrixGenerator(N, R)
 		nodeV = self.findNodeVoltage(self.parseCircuit("q2CircuitFile-{0}.txt".format(N)))
 		return nodeV[0] * R / (1 - nodeV[0])
 
+	def sparsefindReq(self, N, R):
+		self.FDMatrixGenerator(N, R)
+		nodeV = self.sparseFindNodeVoltage(self.parseCircuit("q2CircuitFile-{0}.txt".format(N)))
+		return nodeV[0] * R / (1 - nodeV[0])
 
 	def parseCircuit(self, filename):
 		file = open(filename, "r")
@@ -46,12 +67,6 @@ class Circuit(object):
 		A = []
 		for line in circuitFile[4:]:
 			A.append(map(float, line.split("\n")[0].split(" ")))
-
-
-		# print "J: {0}".format(J)
-		# print "R: {0}".format(R)
-		# print "E: {0}".format(E)
-		# print "A: {0}".format(A)
 
 		return (J, R, E, A)
 
@@ -100,7 +115,6 @@ class Circuit(object):
 			J = J + str(0) + " "
 
 		#omit last space (formatting of the read file method)
-		#print (J[:-1])
 		file.write(J[:-1] + "\n")
 
 
@@ -109,7 +123,6 @@ class Circuit(object):
 		for i in range(mesh):
 			R = R + str(res) + " "
 
-		#print (R[:-1])
 		file.write(R[:-1] + "\n")
 
 
@@ -118,7 +131,6 @@ class Circuit(object):
 		for i in range(mesh - 1):
 			E = E + str(0) + " "
 
-		#print (E[:-1])
 		file.write(E[:-1] + "\n")
 
 
@@ -133,8 +145,7 @@ class Circuit(object):
 				column = i // (N+1)
 				node_column = column * (2*N +1) + N + row + 1
 				node_row = column*(2*N+1) + row + 1
-				# print "node_column: {0}".format(node_column)
-				# print "node_row: {0}".format(node_row)
+
 				
 				#test voltage input branch
 				if(j == 0 and i == 0): 
@@ -160,12 +171,6 @@ class Circuit(object):
 				else:  
 					sub = sub + str(0) + " "
 
-			#print (sub[:-1])
 			file.write(sub[:-1] + "\n")
-
-        #j = column number (0 .. 2N)
-        #i = row number (0 .. N)
-		#vertical mesh number = j(2N + 1) + j + 1
-		#horizontal mesh number = j(2N + 1 ) N + i + 1
 
 

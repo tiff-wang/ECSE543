@@ -6,6 +6,7 @@ import math, copy, os, time
 m = Matrix()
 c = Circuit()
 
+
 #========================== TEST MATRIX ========================
 
 matrix1 =[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1]]
@@ -125,13 +126,25 @@ vector = [1, 2, 3, 4]
 # print c.findReq(1, 1000)
 
 
-## find Req for all N = 2 .. 10 and compute runtime for each N 
-# for N in range(2, 11):
-#  	start = time.clock()
-#  	res = c.findReq(N, 1000)
-#  	end = time.clock()
-#  	runtime = (end - start) * 1000
-#  	print "N = {0}:   Req = {1} ohm   Runtime={2} ms".format(N, res, runtime)
+# find Req for all N = 2 .. 10 and compute runtime for each N 
+for N in range(2, 11):
+ 	start = time.clock()
+ 	res = c.findReq(N, 1000)
+ 	end = time.clock()
+ 	runtime = (end - start) * 1000
+ 	print "N = {0}:   Req = {1} ohm   Runtime={2} ms".format(N, res, runtime)
+
+print "" 
+# find Req using sparse matrix properties for all N = 2 .. 10 and compute runtime for each N 
+for N in range(2, 11):
+ 	start = time.clock()
+ 	res = c.sparsefindReq(N, 1000)
+ 	end = time.clock()
+ 	runtime = (end - start) * 1000
+ 	print "N = {0}:   Req = {1} ohm   Sparse Runtime={2} ms".format(N, res, runtime)
+
+
+
 
 
 #=========================SPARSEMATRIX TEST ================================
@@ -148,29 +161,115 @@ vector = [1, 2, 3, 4]
 	# print row
 
 
-A = c.parseCircuit("q2CircuitFile-1.txt")[3]
-for row in A: print(row)
+# circuitNetwork = c.parseCircuit("q2CircuitFile-2.txt")
+# J = circuitNetwork[0]
+# R = circuitNetwork[1]
+# E = circuitNetwork[2]
+# A = circuitNetwork[3]
+# Y = [[0 for x in range(len(R))] for y in range(len(R))]
+		
+# for i in range(len(Y)):
+# 	Y[i][i] = 1/R[i]
 
-for row in m.matrixTranspose(A): print (row)
+# print "\nA"
+# for row in A: print(row)
+
+# b = len(A[0]) - len(A) + 1
+
+# AYAT = m.sparseMatrixMultiplication(A, 0, b, m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b), 0, b)
+# for row in AYAT: print row
+
+# print ""
+
+# AYAT = m.matrixMultiplication(m.matrixMultiplication(A, Y), m.matrixTranspose(A))
+# for row in AYAT: print row
 
 
-print "normal" 
-for row in m.matrixMultiplication(A, m.matrixTranspose(A)): print (row)
+# print m.sparseMatrixVectorMultiplication(A, 0, b, m.vectorSubtraction(J, m.sparseMatrixVectorMultiplication(Y, 0, 1, E)))
+# vector =  m.matrixVectorMultiplication(A, m.vectorSubtraction(J, m.matrixVectorMultiplication(Y, E)))
 
 
-print "\nsparse"
-for row in m.sparseMatrixMultiplication(A, 0, 4, m.matrixTranspose(A), 0, 4): print (row)
 
-print "\n matrix * vector"
-for row in m.matrixVectorMultiplication(matrix1, vector): print row
+# print "\ntranspose A"
+# for row in m.matrixTranspose(A): print (row)
 
-print "\n sparse matrix * vector"
-for row in m.sparseMatrixVectorMultiplication(matrix1, 0, 2, vector): print row
+# print "\nYA^T sparse"
+# for row in m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b): print (row)
+
+# print "\nYA^T"
+# for row in m.matrixMultiplication(Y, m.matrixTranspose(A)): print (row)
+
+# print "normal" 
+# for row in m.matrixMultiplication(A, m.matrixTranspose(A)): print (row)
 
 
-# print "\nlower"
-# for row in m.choleskiDecomposition(A): print (row)
+# print "\nsparse"
+# for row in m.sparseMatrixMultiplication(A, 0, b, m.matrixTranspose(A), 0, b): print (row)
+
+# print "\n matrix * vector"
+# print m.matrixVectorMultiplication(matrix1, vector)
+
+# print "\n sparse matrix * vector"
+# print m.sparseMatrixVectorMultiplication(matrix1, 0, 5, vector)
+
+# print "\nAYA^T"
+# AYAT = m.matrixMultiplication(A, m.matrixMultiplication(Y, m.matrixTranspose(A)))
+# for row in AYAT: print row
+# # sparseAYAT = copy.deepcopy(AYAT)
+# # print "\n sparse AYAT"
+# sparseAYAT = m.sparseMatrixMultiplication(A, 0, b, m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b), 0, b)
+# for row in sparseAYAT: print row
+
+
+# print "\nlower "
+# m.choleskiDecomposition(AYAT)
+# for row in AYAT: print row 
+
+# print "\nsparse lower "
+# m.sparseCholeskiDecomposition(sparseAYAT, 5)
+# for row in sparseAYAT: print row 
+
+# b = m.matrixVectorMultiplication(A, m.vectorSubtraction(J, m.matrixVectorMultiplication(Y, E)))
+
+# vector = m.sparseMatrixVectorMultiplication(A, 0, 4, m.vectorSubtraction(J, m.sparseMatrixVectorMultiplication(Y, 0, 1, E)))
+
+# print "\nvector"
+# print b
+
+# print "\nsparseVector"
+# print vector
+
+#at this point AYAT is a L matrix
+# print "\nsolve Lower"
+# print m.solvingLowerMatrix(AYAT, b)
+
+# print "\nsolve SparseLower"
+# print m.sparseSolvingLowerMatrix(sparseAYAT, b, 3)
+
+# y = m.solvingLowerMatrix(AYAT, b)
+# print "\nsolve LowerTranpose"
+# print m.solvingTransposeLowerMatrix(AYAT, y)
+
+# print "\nsolve SparseLowerTranpose"
+# print m.sparseSolvingTransposeLowerMatrix(sparseAYAT, y, 3)
+
+# print "\nfindNodeVoltage"
+# print c.findNodeVoltage(circuitNetwork)
+
+# print "\nsparsefindNodeVoltage"
+# print c.sparseFindNodeVoltage(circuitNetwork, 1)
 
 
 #=========================SPARSEMATRIX TEST END ================================
+
+
+#=========================SPARSE CHOLESKI TEST =================================
+
+
+# print "sparsefindReq"
+# print c.sparsefindReq(2,1000)
+# print "findReq"
+# print c.findReq(2, 1000)
+
+#=========================SPARSE CHOLESKI TEST END ================================
 

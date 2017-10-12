@@ -26,10 +26,6 @@ class Matrix(object):
 					sum += matrix[i][k] * matrix[j][k]
 				matrix[i][j] = (matrix[i][j] - sum) / matrix[j][j]
 
-		# print ("decomposition of matrix: ")
-		# for row in matrix: print(row)
-		# print "\n"
-
 
 	#method executes A*A^T. prints resulting matrix 
 	def decompositionCheck(self, matrix):
@@ -41,9 +37,6 @@ class Matrix(object):
 				for k in range(len(matrix)):
 					sum += matrix[i][k] * matrix[j][k]
 				LLT[i].append(sum)
-		# for row in LLT: 
-		# 	print (row)
-
 
 	#method solves L * y = b, returns y 
 	def solvingLowerMatrix(self, matrix, vector):
@@ -159,16 +152,16 @@ class Matrix(object):
 		result = []
 		row_size = len(matrix1)
 		column_size = len(matrix2[0])
+
 		for i in range(row_size):
 			offset_row = i + off1 if off1 != None else 0
 			row= []
 			for j in range(column_size):
 				sum = 0
 				offset_column = j + off2 if off2 != None else 0
-				for k in range(offset_row if (offset_row > offset_column) else offset_column, 
-					offset_row + b1 if (offset_row + b1 < offset_column + b2) else offset_column + b2):
-					if(matrix1[i][k] != 0 or matrix2[k][j] != 0): 
-						sum += matrix1[i][k] * matrix2[k][j]
+				for k in range(max(offset_column, offset_row, 0), 
+					min(offset_column+b2, offset_row + b1, len(matrix2))):
+					sum += matrix1[i][k] * matrix2[k][j]
 				row.append(sum)
 			result.append(row)
 
@@ -191,3 +184,74 @@ class Matrix(object):
 			result.append(sum)
 
 		return result
+
+	#decomposes the banded matrix A into a lower matrix such that L*L^T = A 
+	#matrix A altered after the method (replaced by lower matrix L)
+	def sparseCholeskiDecomposition(self, matrix, b):
+		size = len(matrix)
+		for j in range(size): 
+			sum = 0
+			for i in range(j):
+				sum += matrix[j][i] * matrix[j][i]
+			matrix[j][j] = math.sqrt(matrix[j][j] - sum)
+			
+			#fill uper triangle with 0
+			for i in range(j):
+				matrix[i][j] = 0;
+			
+
+			for i in range(j+1, min(j+b, size)):
+				sum = 0
+				for k in range(max(j - b, 0),j):
+					sum += matrix[i][k] * matrix[j][k]
+				matrix[i][j] = (matrix[i][j] - sum) / matrix[j][j]
+
+			for i in range(j+b, size):
+				matrix[i][j] = 0;
+
+	def choleskiDecomposition(self, matrix):
+		size = len(matrix)
+		for j in range(size): 
+			sum = 0
+			for i in range(j):
+				sum += matrix[j][i] * matrix[j][i]
+			matrix[j][j] = math.sqrt(matrix[j][j] - sum)
+			for i in range(j):
+				matrix[i][j] = 0;
+			for i in range(j+1, size):
+				sum = 0
+				for k in range(j):
+					sum += matrix[i][k] * matrix[j][k]
+				matrix[i][j] = (matrix[i][j] - sum) / matrix[j][j]
+
+	#method solves sparse L * y = vector, returns y 
+	def sparseSolvingLowerMatrix(self, matrix, vector, b):
+		result = []
+		size = len(vector)
+		for i in range(size):
+			sum = 0
+			for j in range(i-b if i - b > 0 else 0, i):
+				sum += result[j] * matrix[i][j]
+			result.append((vector[i] - sum) / matrix[i][i])
+		return result
+
+	#method solves sparse L^T * x = vector, returns x 
+	def sparseSolvingTransposeLowerMatrix(self, matrix, vector, b):
+		result = []
+		size = len(vector)
+		for i in range(size)[::-1]: 
+			sum = 0
+			for j in range(size)[i + b -1 if i + b -1 < size else size:i:-1]:
+				sum += result[size-j-1] * matrix[j][i]
+			result.append((vector[i] - sum) / matrix[i][i])
+		return result[::-1]
+
+
+	#method solves banded A * x = b using choleski decomposition, returns x
+	#method clones input matrix, so the input matrix does not change during the process
+	def sparseCholeski(self, matrix, vector, b):
+		matrix_clone = copy.deepcopy(matrix)
+		self.sparseCholeskiDecomposition(matrix_clone, b)
+		y = self.sparseSolvingLowerMatrix(matrix_clone, vector, b)
+	 	result = self.sparseSolvingTransposeLowerMatrix(matrix_clone, y, b)
+	 	return result
