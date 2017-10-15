@@ -1,11 +1,12 @@
 from __future__ import division
 from matrix import Matrix
 from circuit import Circuit
+from finiteDifference import FiniteDifference
 import math, copy, os, time
 
 m = Matrix()
 c = Circuit()
-
+fd = FiniteDifference()
 
 #========================== TEST MATRIX ========================
 
@@ -127,21 +128,21 @@ vector = [1, 2, 3, 4]
 
 
 # find Req for all N = 2 .. 10 and compute runtime for each N 
-for N in range(2, 11):
- 	start = time.clock()
- 	res = c.findReq(N, 1000)
- 	end = time.clock()
- 	runtime = (end - start) * 1000
- 	print "N = {0}:   Req = {1} ohm   Runtime={2} ms".format(N, res, runtime)
+# for N in range(2, 11):
+#  	start = time.clock()
+#  	res = c.findReq(N, 1000)
+#  	end = time.clock()
+#  	runtime = (end - start) * 1000
+#  	print "N = {0}:   Req = {1} ohm   Runtime={2} ms".format(N, res, runtime)
 
-print "" 
-# find Req using sparse matrix properties for all N = 2 .. 10 and compute runtime for each N 
-for N in range(2, 11):
- 	start = time.clock()
- 	res = c.sparsefindReq(N, 1000)
- 	end = time.clock()
- 	runtime = (end - start) * 1000
- 	print "N = {0}:   Req = {1} ohm   Sparse Runtime={2} ms".format(N, res, runtime)
+# print "" 
+# # find Req using sparse matrix properties for all N = 2 .. 10 and compute runtime for each N 
+# for N in range(2, 11):
+#  	start = time.clock()
+#  	res = c.sparsefindReq(N, 1000)
+#  	end = time.clock()
+#  	runtime = (end - start) * 1000
+#  	print "N = {0}:   Req = {1} ohm   Sparse Runtime={2} ms".format(N, res, runtime)
 
 
 
@@ -176,19 +177,6 @@ for N in range(2, 11):
 
 # b = len(A[0]) - len(A) + 1
 
-# AYAT = m.sparseMatrixMultiplication(A, 0, b, m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b), 0, b)
-# for row in AYAT: print row
-
-# print ""
-
-# AYAT = m.matrixMultiplication(m.matrixMultiplication(A, Y), m.matrixTranspose(A))
-# for row in AYAT: print row
-
-
-# print m.sparseMatrixVectorMultiplication(A, 0, b, m.vectorSubtraction(J, m.sparseMatrixVectorMultiplication(Y, 0, 1, E)))
-# vector =  m.matrixVectorMultiplication(A, m.vectorSubtraction(J, m.matrixVectorMultiplication(Y, E)))
-
-
 
 # print "\ntranspose A"
 # for row in m.matrixTranspose(A): print (row)
@@ -215,8 +203,7 @@ for N in range(2, 11):
 # print "\nAYA^T"
 # AYAT = m.matrixMultiplication(A, m.matrixMultiplication(Y, m.matrixTranspose(A)))
 # for row in AYAT: print row
-# # sparseAYAT = copy.deepcopy(AYAT)
-# # print "\n sparse AYAT"
+
 # sparseAYAT = m.sparseMatrixMultiplication(A, 0, b, m.sparseMatrixMultiplication(Y, 0, 1, m.matrixTranspose(A), 0, b), 0, b)
 # for row in sparseAYAT: print row
 
@@ -272,4 +259,13 @@ for N in range(2, 11):
 # print c.findReq(2, 1000)
 
 #=========================SPARSE CHOLESKI TEST END ================================
+
+
+
+#=========================FINITE DIFFERENCE TEST =================================
+grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
+fd.solveBySOR(grid, 1, 0.001, True, True, True, True)
+
+#=========================FINITE DIFFERENCE TEST END ================================
+
 

@@ -1,0 +1,5 @@
+Report 
+
+- half-bandwidth: b = max(mesh) - min(mesh)
+					= col*(2N+1) + N + row + 1 - (col - 1) * (2N+1) + N + row + 1
+					= 2N + 1 
