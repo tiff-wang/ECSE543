@@ -1,4 +1,5 @@
 from __future__ import division
+import copy
 
 '''
 format used in this class: 
@@ -20,7 +21,7 @@ class FiniteDifference(object):
 	#assumes the grid is already formatted to be limited to unknown nodes
 	#and the boundaries are defined (determine whether the sides are symmetric)
 	def solveBySOR(self, grid, w, threshold, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry):
-		counter = 0
+		# counter = 0
 		underThreshold = False
 		while(not underThreshold):
 			underThreshold = True
@@ -39,7 +40,43 @@ class FiniteDifference(object):
 					if (j == 2 and leftSymmetry) : grid[i][0] = newPotential
 					if (j == len(grid[i]) - 2 and rightSymmetry): grid[i][j+1] = grid[i][j-1]
 
-			counter += 1
-			print "\nSOR k = {0}".format(counter)
+			# counter += 1
+			# print "\nSOR k = {0}".format(counter)
+			# for row in grid: print row
+
+	#map the whole grid after symmetry
+	#if Symmetry true, take into account the "false" boundaries inserted in calculations (not to be reflected)
+	def mapGrid(self, grid, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry):
+		if topSymmetry: 
+			for row in grid[3:]:
+				grid.insert(0, copy.deepcopy(row))
+
+			print "\nTop Symmetry:"
 			for row in grid: print row
+
+		if bottomSymmetry: 
+			for row in grid[-4::-1]:
+				grid.append(copy.deepcopy(row))
+
+			print "\nBottomSymmetry:"
+			for row in grid: print row
+
+		if leftSymmetry: 
+			for row in grid:
+				for element in row[3:]:
+					row.insert(0, element)
+
+			print "\nLeft Symmetry:"
+			for row in grid: print row
+
+		if rightSymmetry: 
+			for row in grid:
+				for element in row[-4::-1]:
+					row.append(element)
+
+			print "\nRight Symmetry"
+			for row in grid: print row
+
+
+
 

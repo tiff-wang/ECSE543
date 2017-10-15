@@ -263,8 +263,21 @@ vector = [1, 2, 3, 4]
 
 
 #=========================FINITE DIFFERENCE TEST =================================
-grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
-fd.solveBySOR(grid, 1, 0.001, True, True, True, True)
+# grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
+# fd.solveBySOR(grid, 1, 0.001, True, True, True, True)
+
+
+#0.1 - 0.04 = 0.06 and 0.1 - 0.02 = 0.08
+#h = 0.02 
+# grid = [[0, 0, 0, 15], [0, 0, 0, 15], [0, 0, 0, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+# fd.solveBySOR(grid, 1, 0.001, True, False, False, True)
+
+gridTest = [[1, 2, 1, 4, 5], [6, 7, 6, 9, 0], [1, 2, 1, 4, 5], [3, 4, 3, 6, 7]]
+for row in gridTest: print row
+
+fd.mapGrid(gridTest, True, False, False, True)
+# fd.mapGrid(gridTest, False, False, False, True)
+
 
 #=========================FINITE DIFFERENCE TEST END ================================
 
