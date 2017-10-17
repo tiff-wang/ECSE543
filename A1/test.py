@@ -264,19 +264,86 @@ vector = [1, 2, 3, 4]
 
 #=========================FINITE DIFFERENCE TEST =================================
 # grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]
-# fd.solveBySOR(grid, 1, 0.001, True, True, True, True)
 
 
 #0.1 - 0.04 = 0.06 and 0.1 - 0.02 = 0.08
 #h = 0.02 
-# grid = [[0, 0, 0, 15], [0, 0, 0, 15], [0, 0, 0, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-# fd.solveBySOR(grid, 1, 0.001, True, False, False, True)
+# grid = [[0, 0, 0, 15, 15, 15], [0, 0, 0, 15, 15, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
 
-gridTest = [[1, 2, 1, 4, 5], [6, 7, 6, 9, 0], [1, 2, 1, 4, 5], [3, 4, 3, 6, 7]]
-for row in gridTest: print row
 
-fd.mapGrid(gridTest, True, False, False, True)
-# fd.mapGrid(gridTest, False, False, False, True)
+# fd.solveBySOR(grid, 1, 0.00001, True, False, False, True, True, 2, 2)
+# gridSOR = copy.deepcopy(grid)
+# counter = fd.solveBySOR(gridSOR, 1.4, 0.00001, True, False, False, True, True, 2, 3);
+# print "counter: {0}".format(counter)
+# for row in gridSOR : print row
+
+# gridJacobi = copy.deepcopy(grid)
+# print ""
+# for row in gridJacobi: print row
+
+# counter = fd.solveByJacobi(gridJacobi, 0.00001, True, False, False, True, True, 2, 3);
+# print "counter: {0}".format(counter)
+# for row in gridJacobi: print row
+# print ""
+
+
+# print "\nlower left corner"
+# for row in grid: 
+# 	rounded = [ round(elem, 2) for elem in row ]
+# 	print rounded
+
+# fd.mapGrid(grid, True, False, False, True)
+# # fd.mapGrid(gridTest, False, False, False, True)
+
+# print "\nwhole map"
+# for row in grid: 
+# 	rounded = [ round(elem, 2) for elem in row ]
+# 	print rounded
+
+
+
+#============== varying w ==================
+#w : from 1.0 to 2.0 with step = 0.1
+# grid = [[0, 0, 0, 15, 15, 15], [0, 0, 0, 15, 15, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+# for w in range(10, 20):
+# 	print "for w = {0}".format(w/10)
+# 	gridTest = copy.deepcopy(grid)
+# 	counter = fd.solveBySOR(gridTest, w/10, 0.00001, True, False, False, True, True, 2, 2)
+# 	fd.mapGrid(gridTest, True, False, False, True)
+# 	print "solved in {0} iteration. Potential at (0.06, 0.04): {1}\n".format(counter, gridTest[2][3])
+
+
+
+#============== varying h ==================
+h = [0.02, 0.01, 0.005, 0.001]
+#SOR
+print "using SOR"
+for step in h:
+	grid = fd.gridGenerator(step)
+	fd.solveBySOR(grid, 1.4, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+
+	# if(step > 0.005):
+	# 	for row in grid: print [round(element, 2) for element in row]
+
+	# print ""
+
+	fd.mapGrid(grid, True, False, False, True)
+	# if(step > 0.005):
+	# 	for row in grid: print [round(element, 2) for element in row]
+
+	print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}".format(step, grid[int(0.04/step)][int(0.06/step)])
+
+#Jacobi
+# print "\nusing Jacobi"
+# for step in h:
+# 	grid = fd.gridGenerator(step)
+# 	fd.solveByJacobi(grid, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+	
+# 	fd.mapGrid(grid, True, False, False, True)
+# 	# if(step > 0.005):
+# 	# 	for row in grid: print row
+
+# 	print "h={0}     Potential at (0.06, 0.04): {1}".format(step, grid[int(0.04/step)][int(0.06/step)])
 
 
 #=========================FINITE DIFFERENCE TEST END ================================
