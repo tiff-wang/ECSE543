@@ -58,33 +58,54 @@ class FiniteDifference(object):
 			# if counter == 100: break
 		return counter;
 
-	#map the whole grid after symmetry
-	#if Symmetry true, take into account the "false" boundaries inserted in calculations (not to be reflected)
-	def mapGrid(self, grid, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry):
-		if topSymmetry: 
-			grid.pop(0)
-			for row in grid[0:]:
-				grid.insert(0, copy.deepcopy(row))
+	#given a grid of nodes, solve by SOR 
+	#assumes the grid is already formatted to be limited to unknown nodes
+	#and the boundaries are defined (determine whether the sides are symmetric)
+	def nonUniformSOR(self, grid, w, threshold, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry, corner, x, y, i_coord, j_coord):
+		#if corner == True, then i and j will map the corner of the studied space that have fixed voltage 
+		# negative x,y : fixed V > |x|, |y|, positive x, y : fixed V < |x|, |y|
+		counter = 0
 
+		underThreshold = False
+		while(not underThreshold):
+			underThreshold = True
+			for i in range(1, len(grid) - 1):
+				for j in range(1, len(grid[i]) - 1):
+					if(not corner or (corner and not(i < x and j > len(grid[0]) - y -1))):
+						# print "i, j: {0}, {1}".format(i, j)
+						a1 = abs(i_coord[i] - i_coord[i-1])
+						a2 = abs(i_coord[i+1] - i_coord[i])
+						b1 = abs(j_coord[i] - j_coord[i-1])
+						b2 = abs(j_coord[i+1] - j_coord[i])
 
-		if bottomSymmetry: 
-			grid.pop(-1)
-			for row in grid[-1::-1]:
-				grid.append(copy.deepcopy(row))
+						temp = (grid[i-1][j]/a1/(a1+a2) + grid[i+1][j]/a2/(a1+a2) + grid[i][j-1]/b1/(b1+b2) + grid[i][j+1]/b2/(b1+b2)) / (1/a1/(a1+a2) + 1/a2/(a1+a2) + 1/b1/(b1+b2) + 1/b2/(b1+b2))
+						newPotential = (1-w) * grid[i][j] + w*temp
+						# newPotential = (1-w)*grid[i][j] + w/4*(grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j])
+						# if(i == 1 and j == 1 or j == 2): print newPotential
+						#check residual at each node (aka newPotential - oldPotential)
+						
 
+						underThreshold = underThreshold and (newPotential - grid[i][j] < threshold)
+						grid[i][j] = newPotential
+						#check for symmetry conditions: 
+						if (i == 2 and topSymmetry and (not corner or (corner and j < y))): grid[0][j] = newPotential
+						if (i == len(grid) - 2 and bottomSymmetry): grid[i+1][j] = grid[i-1][j]
+						if (j == 2 and leftSymmetry) : grid[i][0] = newPotential
+						if (j == len(grid[i]) - 2 and rightSymmetry and (not corner or (corner and i >= x))): grid[i][j+1] = grid[i][j-1]
 
-		if leftSymmetry: 
-			for row in grid:
-				row.pop(0)
-				for element in row[0:]:
-					row.insert(0, element)
+			# for i in range(1, len(grid) - 1):
+			# 	for j in range(1, len(grid) -1 ):
+			# 		residual = grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j] - 4*grid[i][j]
+			# 		underThreshold = underThreshold and (residual < threshold)
 
+			counter += 1
+			# if counter == 1:
+			# 	print "\nSOR k = {0}".format(counter)
+			# 	for row in grid: print [round(element, 2) for element in row]
+			
 
-		if rightSymmetry: 
-			for row in grid:
-				row.pop(-1)
-				for element in row[-1::-1]:
-					row.append(element)
+			# if counter == 100: break
+		return counter;
 
 
 	def solveByJacobi(self, grid, threshold, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry, corner, x, y):
@@ -125,7 +146,40 @@ class FiniteDifference(object):
 		return counter;
 
 
-	#assume this grid generator is taylored to the problem with the described parameteres
+
+	#map the whole grid after symmetry
+	#if Symmetry true, take into account the "false" boundaries inserted in calculations (not to be reflected)
+	def mapGrid(self, grid, topSymmetry, bottomSymmetry, leftSymmetry, rightSymmetry):
+		if topSymmetry: 
+			grid.pop(0)
+			for row in grid[0:]:
+				grid.insert(0, copy.deepcopy(row))
+
+
+		if bottomSymmetry: 
+			grid.pop(-1)
+			for row in grid[-1::-1]:
+				grid.append(copy.deepcopy(row))
+
+
+		if leftSymmetry: 
+			for row in grid:
+				row.pop(0)
+				for element in row[0:]:
+					row.insert(0, element)
+
+
+		if rightSymmetry: 
+			for row in grid:
+				row.pop(-1)
+				for element in row[-1::-1]:
+					row.append(element)
+
+
+	
+
+
+	#assume this grid generator is taylored to the problem with the described parameteres in the assignment
 	def gridGenerator(self, h):
 		size = 0.1 / h + 1; #+1 cause of the symmetry
 		grid = [[0 for x in range(int(size))] for y in range(int(size))]
@@ -137,4 +191,6 @@ class FiniteDifference(object):
 
 
 
+	def nonUniformGridGenerator(self, h, x, y):
+		pass
 
