@@ -31,31 +31,16 @@ class FiniteDifference(object):
 			for i in range(1, len(grid) - 1):
 				for j in range(1, len(grid[i]) - 1):
 					if(not corner or (corner and not(i < x and j > len(grid[0]) - y -1))):
-						# print "i, j: {0}, {1}".format(i, j)
-						#check for symmetry conditions: 
 						newPotential = (1-w)*grid[i][j] + w/4*(grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j])
-						# if(i == 1 and j == 1 or j == 2): print newPotential
 						#check residual at each node (aka newPotential - oldPotential)
-	
-						# underThreshold = underThreshold and (newPotential - grid[i][j] < threshold)
+						underThreshold = underThreshold and (newPotential - grid[i][j] < threshold)
 						grid[i][j] = newPotential
 						if (i == 2 and topSymmetry and (not corner or (corner and j < y))): grid[0][j] = newPotential
 						if (i == len(grid) - 2 and bottomSymmetry): grid[i+1][j] = grid[i-1][j]
 						if (j == 2 and leftSymmetry) : grid[i][0] = newPotential
 						if (j == len(grid[i]) - 2 and rightSymmetry and (not corner or (corner and i >= x))): grid[i][j+1] = grid[i][j-1]
 
-			for i in range(1, len(grid) - 1):
-				for j in range(1, len(grid) -1 ):
-					residual = grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j] - 4*grid[i][j]
-					underThreshold = underThreshold and (residual < threshold)
-
 			counter += 1
-			# if counter == 1:
-			# 	print "\nSOR k = {0}".format(counter)
-			# 	for row in grid: print [round(element, 2) for element in row]
-			
-
-			# if counter == 100: break
 		return counter;
 
 	#given a grid of nodes, solve by SOR 
@@ -80,9 +65,6 @@ class FiniteDifference(object):
 
 						temp = (grid[i-1][j]/a1/(a1+a2) + grid[i+1][j]/a2/(a1+a2) + grid[i][j-1]/b1/(b1+b2) + grid[i][j+1]/b2/(b1+b2)) / (1/a1/(a1+a2) + 1/a2/(a1+a2) + 1/b1/(b1+b2) + 1/b2/(b1+b2))
 						newPotential = (1-w) * grid[i][j] + w*temp
-						# newPotential = (1-w)*grid[i][j] + w/4*(grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j])
-						# if(i == 1 and j == 1 or j == 2): print newPotential
-						#check residual at each node (aka newPotential - oldPotential)
 						
 
 						underThreshold = underThreshold and (newPotential - grid[i][j] < threshold)
@@ -93,18 +75,7 @@ class FiniteDifference(object):
 						if (j == 2 and leftSymmetry) : grid[i][0] = newPotential
 						if (j == len(grid[i]) - 2 and rightSymmetry and (not corner or (corner and i >= x))): grid[i][j+1] = grid[i][j-1]
 
-			# for i in range(1, len(grid) - 1):
-			# 	for j in range(1, len(grid) -1 ):
-			# 		residual = grid[i-1][j] + grid[i][j-1] + grid[i][j+1] + grid[i+1][j] - 4*grid[i][j]
-			# 		underThreshold = underThreshold and (residual < threshold)
-
 			counter += 1
-			# if counter == 1:
-			# 	print "\nSOR k = {0}".format(counter)
-			# 	for row in grid: print [round(element, 2) for element in row]
-			
-
-			# if counter == 100: break
 		return counter;
 
 

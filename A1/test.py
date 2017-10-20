@@ -22,10 +22,10 @@ vector = [1, 2, 3, 4]
 #========================= PART 1 TEST ================================
 
 
-#import all testCircuit files in a list
-# testCiruits = []
-# for file in os.listdir("."):
-#     if file.endswith(".txt"): testCiruits.append(file)
+# import all testCircuit files in a list
+testCiruits = []
+for file in os.listdir("."):
+    if file.startswith("testCircuit"): testCiruits.append(file)
 
 
 #========================= Choleski Decomposition test Matrices ================================
@@ -34,6 +34,7 @@ vector = [1, 2, 3, 4]
 # matrix_3x3 = [[36, 24, -30], [24, 25, -14], [-30, -14, 30]]
 # matrix_4x4 = [[1, 0, 3, 1], [0, 4, 8, 0], [3, 8, 26, 5], [1, 0 , 5, 30]]
 # matrix_5x5 = [5,0,0,1,0],[0,5,1,1,3],[0,1,2,0,2],[1,1,0,3,1],[0,3,2,1,8]
+# matrix_5x5 = [[27, 2, 21, 0, 1], [2, 8, 2, 0, 2], [21, 2, 26, 6, 1], [0, 0, 6, 4, 0],[ 1, 2, 1, 0, 1]]
 
 
 # x2 = [1, 2]
@@ -88,10 +89,10 @@ vector = [1, 2, 3, 4]
 
 
 # print "\n\nmatrix 5x5: "
-# for row in matrix_5x5: print (row)
+# for row in matrix_5x5: print row
 # print "\nx5 = {0}\n".format(x5)
 # print "matrix 5x5 * x5 = {0}".format(b5)
-# print "choleski solution: {0}".format(choleski_sln5)
+# print "choleski solution: {0}".format([round(element, 3) for element in choleski_sln5])
 # print "choleski solution checked for matrix 5: {0}".format(m.vectorComparator(choleski_sln5, x5))
 #================================ END ================================
 
@@ -109,8 +110,8 @@ vector = [1, 2, 3, 4]
 # print "\n\n"
 
 #========================== TEST CIRCUITS ========================
-# for file in testCiruits: 
-# 	print "{0}: {1}".format(file, c.findNodeVoltage(c.parseCircuit(file)))
+for file in testCiruits: 
+	print "{0}: {1}".format(file, [round(element, 2) for element in c.findNodeVoltage(c.parseCircuit(file))])
 
 # print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(c.parseCircuit(file)))
 #============================== END ============================

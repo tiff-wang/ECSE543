@@ -27,17 +27,6 @@ class Matrix(object):
 				matrix[i][j] = (matrix[i][j] - sum) / matrix[j][j]
 
 
-	#method executes A*A^T. prints resulting matrix 
-	def decompositionCheck(self, matrix):
-		LLT = []
-		for i in range(len(matrix)):
-			LLT.append([])
-			for j in range(len(matrix)):
-				sum = 0 
-				for k in range(len(matrix)):
-					sum += matrix[i][k] * matrix[j][k]
-				LLT[i].append(sum)
-
 	#method solves L * y = b, returns y 
 	def solvingLowerMatrix(self, matrix, vector):
 		result = []
