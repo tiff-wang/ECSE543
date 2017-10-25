@@ -10,10 +10,10 @@ fd = FiniteDifference()
 
 #========================== TEST MATRIX ========================
 
-matrix1 =[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1]]
-matrix2 =[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+# matrix1 =[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1]]
+# matrix2 =[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
-vector = [1, 2, 3, 4]
+# vector = [1, 2, 3, 4]
 
 #============================== END ============================
 
@@ -23,9 +23,9 @@ vector = [1, 2, 3, 4]
 
 
 # import all testCircuit files in a list
-testCiruits = []
-for file in os.listdir("."):
-    if file.startswith("testCircuit"): testCiruits.append(file)
+# testCiruits = []
+# for file in os.listdir("."):
+#     if file.startswith("testCircuit"): testCiruits.append(file)
 
 
 #========================= Choleski Decomposition test Matrices ================================
@@ -110,8 +110,8 @@ for file in os.listdir("."):
 # print "\n\n"
 
 #========================== TEST CIRCUITS ========================
-for file in testCiruits: 
-	print "{0}: {1}".format(file, [round(element, 2) for element in c.findNodeVoltage(c.parseCircuit(file))])
+# for file in testCiruits: 
+# 	print "{0}: {1}".format(file, [round(element, 2) for element in c.findNodeVoltage(c.parseCircuit(file))])
 
 # print "{0}: {1}".format("testCircuit4.txt", c.findNodeVoltage(c.parseCircuit(file)))
 #============================== END ============================
@@ -163,7 +163,7 @@ for file in testCiruits:
 	# print row
 
 
-# circuitNetwork = c.parseCircuit("q2CircuitFile-2.txt")
+# circuitNetwork = c.parseCircuit("q2CircuitFile-9.txt")
 # J = circuitNetwork[0]
 # R = circuitNetwork[1]
 # E = circuitNetwork[2]
@@ -268,15 +268,16 @@ for file in testCiruits:
 
 
 #0.1 - 0.04 = 0.06 and 0.1 - 0.02 = 0.08
-#h = 0.02 
+# h = 0.02 
 # grid = [[0, 0, 0, 15, 15, 15], [0, 0, 0, 15, 15, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+# grid = fd.gridGenerator(h);
+# for row in grid: print row
 
-
-# fd.solveBySOR(grid, 1, 0.00001, True, False, False, True, True, 2, 2)
+# fd.solveBySOR(grid, 1, 0.00001, True, False, False, True, True, 2, 3)
 # gridSOR = copy.deepcopy(grid)
 # counter = fd.solveBySOR(gridSOR, 1.4, 0.00001, True, False, False, True, True, 2, 3);
 # print "counter: {0}".format(counter)
-# for row in gridSOR : print row
+# for row in gridSOR : print [round(element, 2) for element in row]
 
 # gridJacobi = copy.deepcopy(grid)
 # print ""
@@ -293,11 +294,11 @@ for file in testCiruits:
 # 	rounded = [ round(elem, 2) for elem in row ]
 # 	print rounded
 
-# fd.mapGrid(grid, True, False, False, True)
+# fd.mapGrid(gridSOR, True, False, False, True)
 # # fd.mapGrid(gridTest, False, False, False, True)
 
 # print "\nwhole map"
-# for row in grid: 
+# for row in gridSOR: 
 # 	rounded = [ round(elem, 2) for elem in row ]
 # 	print rounded
 
@@ -316,35 +317,36 @@ for file in testCiruits:
 
 
 #============== varying h ==================
-# h = [0.02, 0.01, 0.005, 0.001]
+h = [0.02, 0.01, 0.005, 0.001, 0.0005]
 # h = [0.01]
 #SOR
 # print "using SOR"
 # for step in h:
 # 	grid = fd.gridGenerator(step)
-# 	fd.solveBySOR(grid, 1.4, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+# 	counter = fd.solveBySOR(grid, 1.4, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
 
-# 	# if(step > 0.005):
-# 	# 	for row in grid: print [round(element, 2) for element in row]
+	# if(step > 0.005):
+	# 	for row in grid: print [round(element, 2) for element in row]
 
-# 	print ""
+	# print ""
+# 
+	# fd.mapGrid(grid, True, False, False, True)
+	# if(step > 0.005):
+	# 	for row in grid: print [round(element, 2) for element in row]
 
-# 	fd.mapGrid(grid, True, False, False, True)
-# 	if(step > 0.005):
-# 		for row in grid: print [round(element, 2) for element in row]
+	# print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
 
-# 	print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}".format(step, grid[int(0.04/step)][int(0.06/step)])
-
-#Jacobi
-# print "\nusing Jacobi"
-# for step in h:
-# 	grid = fd.gridGenerator(step)
-# 	fd.solveByJacobi(grid, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+# Jacobi
+print "\nusing Jacobi"
+for step in h:
+	grid = fd.gridGenerator(step)
+	counter = fd.solveByJacobi(grid, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
 	
-# 	fd.mapGrid(grid, True, False, False, True)
+	fd.mapGrid(grid, True, False, False, True)
 # 	# if(step > 0.005):
 # 	# 	for row in grid: print row
 
+	print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
 # 	print "h={0}     Potential at (0.06, 0.04): {1}".format(step, grid[int(0.04/step)][int(0.06/step)])
 
 
@@ -353,32 +355,32 @@ for file in testCiruits:
 
 
 #=========================NON-UNIFORM NODE SPACING FINITE DIFFERENCE TEST =================================
-i_coord = [0, 0.025, 0.035, 0.04, 0.045, 0.05, 0.06, 0.075, 0.09, 0.1, 0.11] #focus on y
-j_coord = [0, 0.02, 0.04, 0.05, 0.055, 0.06, 0.065, 0.07, 0.085, 0.1, 0.115] #focus on x
+# i_coord = [0, 0.025, 0.035, 0.04, 0.045, 0.05, 0.06, 0.075, 0.09, 0.1, 0.11] #focus on y
+# j_coord = [0, 0.02, 0.04, 0.05, 0.055, 0.06, 0.065, 0.07, 0.085, 0.1, 0.115] #focus on x
 
 # i_coord = [0.1 * x for x in range(10)] #focus on y
 # j_coord = [0.1 * x for x in range(10)] #focus on x
 
-grid = [[0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+# grid = [[0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 15, 15, 15, 15, 15, 15], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 
 
 
 # grid = [[0, 0, 0, 15, 15, 15], [0, 0, 0, 15, 15, 15], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-grid2 = fd.gridGenerator(0.01)
-fd.nonUniformSOR(grid, 1.4, 0.00001, True, False, False, True, True, 3, 7, i_coord, j_coord)
-# fd.mapGrid(grid, True, False, False, True)
+# grid2 = fd.gridGenerator(0.01)
+# fd.nonUniformSOR(grid, 1.4, 0.00001, True, False, False, True, True, 3, 7, i_coord, j_coord)
+# # fd.mapGrid(grid, True, False, False, True)
 
-fd.solveBySOR(grid2, 1.4, 0.00001, True, False, False, True, True, 3, 5)
-# fd.mapGrid(grid2, True, False, False, True)
+# fd.solveBySOR(grid2, 1.4, 0.00001, True, False, False, True, True, 3, 5)
+# # fd.mapGrid(grid2, True, False, False, True)
 
-print "non uniform"
-for row in grid[1:]: print [round(element, 2) for element in row[:-1]]
+# print "non uniform"
+# for row in grid[1:]: print [round(element, 2) for element in row[:-1]]
 
-print "\nuniform"
-for row in grid2[1:]: print [round(element, 2) for element in row[:-1]]
+# print "\nuniform"
+# for row in grid2[1:]: print [round(element, 2) for element in row[:-1]]
 
 
 
