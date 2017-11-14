@@ -1,41 +1,50 @@
+from matrix import Matrix
+from circuit import Circuit
+
+m = Matrix()
+c = Circuit()
+
 class FirstOrder(object):
 	def __init__(self):
 		pass
 
-	def matrixGenerator(self):
-		A = [[0 for i in range(19)] for j in range(19)]
-		for i in range(19):
-			if i < 10: 
-				if(i < 8): A[i][i+5] = 1
-				if i%5 != 0: A[i][i-1] = 1
-				if (i+1)% 5 == 0: A[i][i-1] += 1
-				else: A[i][i+1] = 1
-				if i > 4: A[i][i-5] = 1
+	def Slocal(self, coord):
+		Area = 1.0/2.0 * abs((coord[1][1]-coord[0][1])*(coord[2][0]-coord[0][0]) - (coord[1][0]-coord[0][0])*(coord[2][1]-coord[0][1]))
+		S = []
+		for i in range(3):
+			Si = []
+			for j in range(3): 
+				y = (coord[(i+1) % 3][1] - coord[(i+2) % 3][1])*(coord[(j+1) % 3][1] - coord[(j+2) % 3][1])
+				x = (coord[(i+2) % 3][0] - coord[(i+1) % 3][0])*(coord[(j+2) % 3][0] - coord[(j+1) % 3][0])
+				Sij = 1.0 / 4.0 / Area * (y + x)
+				Si.append(Sij)
+			S.append(Si) 
 
-			elif i < 13:
-				A[i][i-5] = 1
-				A[i][i+3] = 1
-				if i != 10: A[i][i-1] = 1
-				if i != 12: A[i][i+1] = 1
+		return S
 
-			else:
-				A[i][i-3] = 1
-				if i < 16: A[i][i+3] = 1
-				else: A[i][i-3] += 1
-				if i%3 != 0: A[i][i+1] = 1
-				if i%3 != 1: A[i][i-1] = 1
-			A[i][i] = -4
-		return A
-
-	def bGenerator(self):
-		b = []
-		list = [8, 9, 12, 15, 18]
-		for i in range(19):
-			if i in list: b.append(-15)
-			else: b.append(0)
-		return b
+	def Sdis(self, triangles):
+		S = [[0 for i in range(len(triangles) * 3)] for i in range(len(triangles) * 3)]
+		for i in range(len(triangles)):
+			local = self.Slocal(triangles[i])
+			for j in range(3):
+				for k in range(3):
+					S[3 * i + j][3 * i + k] = local[j][k]
+		return S
 
 
+	def Sglobal(self, Sdis, C):
+		CT = m.matrixTranspose(C);
+		SdisC = m.matrixMultiplication(Sdis, C)
+		return m.matrixMultiplication(CT, SdisC)
 
-fe = FirstOrder()
-for row in fe.matrixGenerator(): print row
+	def Energy(self, S, Ucon):
+		SUcon = m.matrixVectorMultiplication(S, Ucon)
+		E2 = m.vectorMultiplication(Ucon, SUcon)
+		return E2 * 0.5
+
+
+
+
+
+
+
