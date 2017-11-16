@@ -42,7 +42,8 @@ class FirstOrder(object):
 		E2 = m.vectorMultiplication(Ucon, SUcon)
 		return E2 * 0.5
 
-
+	def capacitance(self, energy):
+		return 2 * energy / 15 / 15 * 8.85 * pow(10, -12)
 
 
 

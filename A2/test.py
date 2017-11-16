@@ -28,34 +28,35 @@ Slocal =  fo.Slocal(triangle[0])
 # for row in Slocal: print row
 
 # print "\nSdis:"
-# Sdis = fo.Sdis(triangle)
+Sdis = fo.Sdis(triangle)
 # for row in Sdis: print [round(element, 2) for element in row]
 
-# Sglobal = fo.Sglobal(Sdis, C)
+Sglobal = fo.Sglobal(Sdis, C)
 # print "\nSglobal:"
 # for row in Sglobal: print [round(element, 2) for element in row]
 
 # print "\nC:"
 # for row in C: print row
-# print len(Sglobal[0])
+print len(Sglobal[0])
 # print len(Ucon)
-# energy = fo.Energy(Sglobal, Ucon)
+energy = fo.Energy(Sglobal, Ucon)
 # print "energy = {0}".format(energy)
 
-# totalEnergy = energy * 4
+totalEnergy = energy * 4
 # cap = 2 * totalEnergy / 15 / 15 * 8.85 * pow(10, -12)
-# print "cap = {0}".format(cap) 
+cap = fo.capacitance(totalEnergy)
+print "cap = {0}".format(cap) 
 
 
 #========================================END FIRSTORDER ================================================
 
 #========================================TESTING CONJUDATE GRADIENT ================================================
-cg = ConjugateGradient()
-A = cg.matrixGenerator()
-b = cg.bGenerator()
-AT = m.matrixTranspose(A)
-ATA = m.matrixMultiplication(AT, A)
-ATb = m.matrixVectorMultiplication(AT, b)
+# cg = ConjugateGradient()
+# A = cg.matrixGenerator()
+# b = cg.bGenerator()
+# AT = m.matrixTranspose(A)
+# ATA = m.matrixMultiplication(AT, A)
+# ATb = m.matrixVectorMultiplication(AT, b)
 
 # for row in ATA: print row
 # print 
@@ -73,17 +74,17 @@ ATb = m.matrixVectorMultiplication(AT, b)
 # A = [[i for i in range(4)] for i in range(4)]
 
 # print cg.rearrange(A, r, p)
-answer = cg.ConjugateGradient(A, b, 0.005)
+# answer = cg.ConjugateGradient(A, b, 0.005)
 #(0.06, 0.04) is node 11
-x = answer[0]
-print [round(pot, 2) for pot in x]
-norm2 = answer[1]
-infinity_norm = answer[2]
-print "potential at (0.06, 0.04): {0}".format(round(x[11],2))
+# x = answer[0]
+# print [round(pot, 2) for pot in x]
+# norm2 = answer[1]
+# infinity_norm = answer[2]
+# print "potential at (0.06, 0.04): {0}".format(round(x[11],2))
 
 
-for i in range(len(norm2)):
-	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
+# for i in range(len(norm2)):
+# 	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
 
 
 
