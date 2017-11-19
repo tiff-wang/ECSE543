@@ -9,7 +9,8 @@ class FirstOrder(object):
 		pass
 
 	def Slocal(self, coord):
-		Area = 1.0/2.0 * abs((coord[1][1]-coord[0][1])*(coord[2][0]-coord[0][0]) - (coord[1][0]-coord[0][0])*(coord[2][1]-coord[0][1]))
+		Area = 1.0/2.0 * abs((coord[1][1]-coord[0][1])*(coord[2][0]-coord[0][0]) - 
+			(coord[1][0]-coord[0][0])*(coord[2][1]-coord[0][1]))
 		S = []
 		for i in range(3):
 			Si = []

@@ -54,7 +54,6 @@ class ConjugateGradient(object):
 			beta = self.beta(A, r, p)
 			r = self.residue(A, x, b)
 			p = self.newOrientation(r, beta, p)
-			residue = 0
 			maxRes = 0
 			norm = 0
 			for res in r: 
@@ -62,7 +61,7 @@ class ConjugateGradient(object):
 				residue += res
 				norm += res*res
 				if abs(res) > maxRes : maxRes = res
-
+			residue = math.sqrt(norm)
 			norm2.append(math.sqrt(norm))
 			infinity_norm.append(maxRes)
 		return (x, norm2, infinity_norm)
