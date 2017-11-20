@@ -69,10 +69,10 @@ ATb = m.matrixVectorMultiplication(AT, b)
 
 # print "\nb: \n", b
 
-# for row in ATA: print row
-# print 
+for row in ATA: print row
+print 
 
-# print ATb
+print ATb
 
 potential = m.choleski(ATA, ATb)
 print "potential using Choleski: \n", [round(element, 2) for element in potential]
@@ -87,22 +87,22 @@ print "potential at (0.06, 0.04) using Choleski: \n", round(potential[11],2)
 # A = [[i for i in range(4)] for i in range(4)]
 
 # print cg.rearrange(A, r, p)
-answer = cg.ConjugateGradient(A, b, 0.005)
-#(0.06, 0.04) is node 11
+answer = cg.ConjugateGradient(ATA, ATb, 0.005)
+# #(0.06, 0.04) is node 11
 print "\npotential using Conjugate Gradient:"
 x = answer[0]
 print [round(pot, 2) for pot in x]
-norm2 = answer[1]
-infinity_norm = answer[2]
+# norm2 = answer[1]
+# infinity_norm = answer[2]
 print "potential at (0.06, 0.04) using Conjugate Gradient: {0}\n".format(round(x[11],2))
 
 
-for i in range(len(norm2)):
-	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
+# for i in range(len(norm2)):
+# 	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
 
-graph = open("graph.csv", "write")
-for i in range(len(norm2)):
-	graph.write("{0}, {1}, {2}\n".format(i, round(norm2[i], 3), round(infinity_norm[i], 3)))
+# graph = open("graph.csv", "write")
+# for i in range(len(norm2)):
+# 	graph.write("{0}, {1}, {2}\n".format(i, round(norm2[i], 3), round(infinity_norm[i], 3)))
 
 
 

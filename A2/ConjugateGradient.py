@@ -48,7 +48,7 @@ class ConjugateGradient(object):
 		r = self.residue(A, x, b)
 		p = copy.deepcopy(r)
 		residue = 1
-		while(residue > residual):
+		while(len(norm2) < len(A)):
 			alpha = self.alpha(A, r, p)
 			x = self.newGuess(x, alpha, p)
 			beta = self.beta(A, r, p)
