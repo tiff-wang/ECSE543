@@ -11,6 +11,17 @@ fo = FirstOrder()
 c = Circuit()
 m = Matrix()
 
+a = [1, 2, 3, 4, 5, 6]
+be = [1, 2, 2, 4, 5, 6]
+
+print m.scaleVector(2, be)
+
+ma = [[0, 0, 1, 0, 0, 6]]
+
+
+print m.vectorMatrixMultiplication(a, ma);
+
+
 #========================================TESTING FILEREADER ================================================
 circuit = c.parseElementFile("test.dat")
 Ucon =  c.parseResultFile("result.dat")
@@ -68,6 +79,8 @@ ATb = m.matrixVectorMultiplication(AT, b)
 # for row in A: print row
 
 # print "\nb: \n", b
+print "lalala"
+print cg.newGuess(a, 3, be)
 
 for row in ATA: print row
 print 
@@ -79,8 +92,8 @@ print "potential using Choleski: \n", [round(element, 2) for element in potentia
 print "potential at (0.06, 0.04) using Choleski: \n", round(potential[11],2)
 
 
-#(0.06, 0.04) is node 11
-# print "potential at (0.06, 0.04): {0}".format(round(potential[11],2))
+# (0.06, 0.04) is node 11
+print "potential at (0.06, 0.04): {0}".format(round(potential[11],2))
 
 # p = [1, 1, 1, 1]
 # r = [5, 6, 7, 8]
@@ -92,17 +105,17 @@ answer = cg.ConjugateGradient(ATA, ATb, 0.005)
 print "\npotential using Conjugate Gradient:"
 x = answer[0]
 print [round(pot, 2) for pot in x]
-# norm2 = answer[1]
-# infinity_norm = answer[2]
+norm2 = answer[1]
+infinity_norm = answer[2]
 print "potential at (0.06, 0.04) using Conjugate Gradient: {0}\n".format(round(x[11],2))
 
 
-# for i in range(len(norm2)):
-# 	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
+for i in range(len(norm2)):
+	print "iteration {0}:       2norm: {1}      infinity_norm: {2}".format(i, round(norm2[i], 3), round(infinity_norm[i], 3))
 
-# graph = open("graph.csv", "write")
-# for i in range(len(norm2)):
-# 	graph.write("{0}, {1}, {2}\n".format(i, round(norm2[i], 3), round(infinity_norm[i], 3)))
+graph = open("graph.csv", "write")
+for i in range(len(norm2)):
+	graph.write("{0}, {1}, {2}\n".format(i, round(norm2[i], 3), round(infinity_norm[i], 3)))
 
 
 

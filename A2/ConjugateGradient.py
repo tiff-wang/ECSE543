@@ -48,11 +48,11 @@ class ConjugateGradient(object):
 		r = self.residue(A, x, b)
 		p = copy.deepcopy(r)
 		residue = 1
-		while(len(norm2) < len(A)):
+		while(residue < len(A)):
 			alpha = self.alpha(A, r, p)
 			x = self.newGuess(x, alpha, p)
-			beta = self.beta(A, r, p)
 			r = self.residue(A, x, b)
+			beta = self.beta(A, r, p)
 			p = self.newOrientation(r, beta, p)
 			maxRes = 0
 			norm = 0
