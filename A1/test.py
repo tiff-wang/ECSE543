@@ -317,13 +317,13 @@ fd = FiniteDifference()
 
 
 #============== varying h ==================
-h = [0.02, 0.01, 0.005, 0.001, 0.0005]
-# h = [0.01]
-#SOR
-# print "using SOR"
-# for step in h:
-# 	grid = fd.gridGenerator(step)
-# 	counter = fd.solveBySOR(grid, 1.4, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+# h = [0.02, 0.01, 0.005, 0.001, 0.0005]
+h = [0.02]
+# SOR
+print "using SOR"
+for step in h:
+	grid = fd.gridGenerator(step)
+	counter = fd.solveBySOR(grid, 1.4, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
 
 	# if(step > 0.005):
 	# 	for row in grid: print [round(element, 2) for element in row]
@@ -332,21 +332,21 @@ h = [0.02, 0.01, 0.005, 0.001, 0.0005]
 # 
 	# fd.mapGrid(grid, True, False, False, True)
 	# if(step > 0.005):
-	# 	for row in grid: print [round(element, 2) for element in row]
+	for row in grid: print [round(element, 2) for element in row]
 
-	# print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
+	print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
 
 # Jacobi
-print "\nusing Jacobi"
-for step in h:
-	grid = fd.gridGenerator(step)
-	counter = fd.solveByJacobi(grid, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
+# print "\nusing Jacobi"
+# for step in h:
+# 	grid = fd.gridGenerator(step)
+# 	counter = fd.solveByJacobi(grid, 0.00001, True, False, False, True, True, int(0.02/step)+1, int(0.04/step) + 1)
 	
-	fd.mapGrid(grid, True, False, False, True)
+	# fd.mapGrid(grid, True, False, False, True)
 # 	# if(step > 0.005):
 # 	# 	for row in grid: print row
 
-	print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
+	# print "h={0} and w=1.4    Potential at (0.06, 0.04): {1}      iterations: {2}".format(step, grid[int(0.04/step)][int(0.06/step)], counter)
 # 	print "h={0}     Potential at (0.06, 0.04): {1}".format(step, grid[int(0.04/step)][int(0.06/step)])
 
 
