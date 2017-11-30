@@ -6,14 +6,14 @@ class CurveFitting(object):
 	def lagrange(self, pos, x, y):
 		result = 0
 		for i in range(len(x)):
-			result += y[i] * self.lagrangePolynomialGenerator(pos, x, i)
+			result += y[i] * self.lagrangePolyWhole(pos, x, i)
 
 		return result
 
 
 
 	#generate lagrange polynomial coefficients given a set of coordinates of degree index (whole domain)
-	def lagrangePolynomialGenerator(self, pos, x, index):
+	def lagrangePolyWhole(self, pos, x, index):
 		#the polynomials start counting at 1 (not 0)
 		numerator = 1.0
 		denominator = 1.0
@@ -26,7 +26,7 @@ class CurveFitting(object):
 
 
 	#generate lagrange polynomial coefficients given a set of coordinates of degree index (subdomain)
-	def lagrangePolynomialGenerator(self, pos, x, n1, n2):
+	def lagrangePolySub(self, pos, x, n1, n2):
 		numerator = float((pos - x[n2]))
 		denominator = float(x[n1] - x[n2])
 		return numerator / denominator
@@ -43,7 +43,7 @@ class CurveFitting(object):
 	#U_1 ==> (1, 2) 
 	#U_2 ==> (2, 1)
 	def hermiteU(self, pos, x, n1, n2):
-		L = self.lagrangePolynomialGenerator(pos, x, n1, n2)
+		L = self.lagrangePolySub(pos, x, n1, n2)
 		DL = self.lagrangeDerivativeGenerator(x, n1, n2)
 		return (1 - 2 * DL * (pos - x[n1])) * L**2
 
@@ -53,7 +53,7 @@ class CurveFitting(object):
 	#V_1 ==> (1, 2) 
 	#V_2 ==> (2, 1)
 	def hermiteV(self, pos, x, n1, n2):
-		L = self.lagrangePolynomialGenerator(pos, x, n1, n2)
+		L = self.lagrangePolySub(pos, x, n1, n2)
 		return (pos - x[n1]) * L**2
 
 
