@@ -29,6 +29,7 @@ class NonLinear(object):
 		return Rg + 0.3 * self.Hder(flux) / A
 
 	def fcur(self, flux):
+		# print "hcur: ", self.Hcur(flux)
 		return Rg * flux + 0.3 * self.Hcur(flux)- NI
 
 	#consider piecewise linear functions when finding H and H_derivative
@@ -54,14 +55,34 @@ class NonLinear(object):
 			if(B[i] > b):
 				return H[i - 1] + (b - B[i - 1]) * m
 
+
 		return H[0] + (b - B[0]) * m
 
 
 	def sucSub(self, guess, threshold):
+		f_0 = self.fcur(0)
 		flux = guess
-		while(abs(self.fcur(flux)) > threshold):
-			flux = self.fcur(flux) - flux
+		count = 0
+		while(abs(self.fcur(flux) / f_0) > threshold):
+			flux = self.fsub(flux)
 		return flux
+
+	def fsub(self, flux):
+		return NI / (Rg + 0.3 * self.Hcur(flux)/flux)
+
+
+
+# def fSubstitution(flux):
+# return 8000/(39.78873577e6 + 0.3 * Hval(flux)/flux)
+# def succesSub (x,tolerance):
+# i = 0
+# while abs(fFlux(x)/fFlux(0)) > tolerance:
+# i += 1
+# x = fSubstitution(x)
+# print('Iterations: ' + str(i) + ' Flux: ' + str(x))
+# return x
+# NR = newtonRaph(0.0, 1e-6)
+
 
 
 

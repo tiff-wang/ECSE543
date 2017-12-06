@@ -12,8 +12,8 @@ class Integration:
 			e2 = s + n
 			sum += (e2 - s)* f1((e2 - s) / 2.0 * x + (s + e2) / 2.0)
 			s += n
-
 		return sum
+
 
 	def Gl1PNonUni(self, f1, coord):
 		w = 2 
