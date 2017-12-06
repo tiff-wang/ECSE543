@@ -29,7 +29,6 @@ class NonLinear(object):
 		return Rg + 0.3 * self.Hder(flux) / A
 
 	def fcur(self, flux):
-		print "Current H:", self.Hcur(flux)
 		return Rg * flux + 0.3 * self.Hcur(flux)- NI
 
 	#consider piecewise linear functions when finding H and H_derivative
@@ -63,6 +62,9 @@ class NonLinear(object):
 		while(abs(self.fcur(flux)) > threshold):
 			flux = self.fcur(flux) - flux
 		return flux
+
+
+
 
 
 

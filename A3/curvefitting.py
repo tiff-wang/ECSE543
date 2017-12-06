@@ -77,6 +77,7 @@ class CurveFitting(object):
 
 		return result
 
+	
 
 
 

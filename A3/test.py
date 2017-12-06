@@ -1,14 +1,19 @@
 #Tiffany Wang 260684152
 #Numerical Methods ECSE 543 - Assignment 3
 
+import math
 from curvefitting import CurveFitting
 from nonlinear import NonLinear 
+from circuit import Circuit
+from integration import Integration
 
 cv = CurveFitting() 
 nl = NonLinear()
+c = Circuit()
+i = Integration()
 
 
-#Question 1
+#======================================Question 1======================================
 
 #a)
 # B_1 = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
@@ -66,7 +71,7 @@ nl = NonLinear()
 # 	string = str(x[i]) + ", " + str(result[i]) + "\n"
 # 	file.write(string)
 
-#Question 2
+#======================================Question 2======================================
 # result = nl.newtonRaphson(0.0, 1e-6)
 # flux = result[0]
 # count = result[1]
@@ -74,8 +79,52 @@ nl = NonLinear()
 # print "Approximated flux in the steel core is: ", round(flux, 9), " Wb"
 # print "Iteration count: ", count
 
-result = nl.sucSub(0.0000009, 1e-6)
-print round(result, 9)
+# result = nl.sucSub(0.0000009, 1e-6)
+# print round(result, 9)
+
+#======================================Question 3======================================
+
+# v = [0, 0]
+# result = c.newtonRaphson(v, 5e-10)
+# vlog = result[1]
+# flog = result[0]
+
+# for row in vlog: print "vn: ", [round(elem, 10) for elem in row]
+# for row in flog: print "fn: ", [round(elem, 10) for elem in row]
+
+
+# matrix =  [[4, 7], [2, 6]]
+
+#======================================Question 4======================================
+#the answer of Int(cos(x)) from x = 0 to x = 1 is sin(1)
+# answer = math.sin(1)
+# file = open("cos.csv", "w")
+
+#print result and parse it into a csv file for graphing purposes for cos
+# for n in range(1, 21):
+# 	res = i.GL1P(math.cos, n, 0, 1)
+# 	error = abs(answer - res)
+# 	print "N = ", n, "  res = ", res, "  error = ", error
+# 	file.write(str(math.log(n)) + ", " + str(math.log(error)) + "\n")
+
+# print "\n"
+
+#the answer of Int(log(x)) from x = 0 to x = 1 is x*lnx - x = -1
+answer = -1
+file = open("log.csv", "w")
+
+#print result and parse it into a csv file for graphing purposes for log
+for m in [(10 * d) for d in range(1, 21)]:
+	res = i.GL1P(math.log, m, 0, 1)
+	error = abs(answer - res)
+	print "N = ", m, "  res = ", res, "  error = ", error
+	file.write(str(math.log(m)) + ", " + str(math.log(error)) + "\n")
+
+# coord = [0, 0.02, 0.05, 0.08, 0.1, 0.15, 0.2, 0.4, 06, 0.8, 1]
+coord = [0.0, 0.025, 0.086, 0.2, 0.36, 0.55, 0.7, 0.80, 0.87, 0.92, 1]
+res = i.Gl1PNonUni(math.log, coord)
+error = abs(answer - res)
+print "Non uniform segments: res = ", res, "  error = ", error
 
 
 
